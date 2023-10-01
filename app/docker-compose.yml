@@ -1,0 +1,19 @@
+version: '3'
+services:
+  app:
+    container_name: sm_app
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      target: test_env
+    image: sm_app
+    restart: always
+    ports: 
+      - 15001:15001
+    networks:
+      - sm_network
+    hostname: sm_app
+
+networks:
+  sm_network: {}
+  default: {}

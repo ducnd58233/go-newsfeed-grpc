@@ -1,0 +1,12 @@
+mysql: &MYSQL
+  dsn: "root:123456@tcp(mysql:3306)/socialmedia?charset=utf8mb4&parseTime=True&loc=Local"
+  defaultstringsize: 256
+  disabledatetimeprecision: true
+  dontsupportrenameindex: true
+  skipinitializewithversion: false
+redis: &REDIS
+  addr: redis:6379
+auth_config:
+  port: 16001
+  mysql: *MYSQL
+  redis: *REDIS

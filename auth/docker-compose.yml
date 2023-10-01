@@ -1,0 +1,60 @@
+version: '3'
+services:
+  authsvc:
+    container_name: sm_authsvc
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      target: test_env
+    image: sm_authsvc
+    restart: always
+    ports: 
+      - 16001:16001
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - sm_network
+    hostname: sm_authsvc
+
+  mysql:
+    image: mysql:8.0
+    volumes:
+      - ./mysql/my.cnf:/etc/mysql/my.cnf
+      - ./data/mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: ms_social_media
+    ports:
+      - 3307:3306
+    restart: always
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
+    hostname: sm_mysql
+    networks:
+      - sm_network
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+      
+  redis:
+    image: redis:latest
+    ports:
+      - 6379:6379
+    restart: always
+    hostname: sm_redis
+    networks:
+      - sm_network
+    healthcheck:
+      test: ["CMD", "redis-cli","ping"]
+
+networks:
+  sm_network: {}
+  default: {}
+      
+

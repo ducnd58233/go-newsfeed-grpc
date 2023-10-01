@@ -1,0 +1,6 @@
+app_config:
+  port: 15001
+  authentication:
+    hosts: ["auth:16001", "auth:16002"]
+  posts:
+    hosts: ["posts:17001", "posts:17002"]
